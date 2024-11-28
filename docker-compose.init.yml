@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  init-backend:
+    image: golang:1.23
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+    command: >
+      sh -c "
+        go mod init gopress &&
+        go get github.com/gofiber/fiber/v2 &&
+        mkdir -p cmd/api internal/handlers internal/models internal/database configs
+      "
+
+  init-frontend:
+    image: node:23-alpine
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    command: >
+      sh -c "
+        npx create-react-app . --template typescript &&
+        npm install @mui/material @emotion/react @emotion/styled axios react-router-dom @reduxjs/toolkit
+      "
